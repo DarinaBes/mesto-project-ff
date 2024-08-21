@@ -1,4 +1,4 @@
-const initialCards = [
+export const initialCards = [
     {
       name: "Архыз",
       link: "https://images.unsplash.com/photo-1708814438006-365af488eb14?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjB8fCVEMCVCMCVEMSU4MCVEMSU4NSVEMSU4QiVEMCVCN3xlbnwwfHwwfHx8MA%3D%3D",
@@ -24,3 +24,7 @@ const initialCards = [
       link: "https://images.unsplash.com/photo-1614000531402-74cca389903f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8JUQwJUIxJUQwJUIwJUQwJUI5JUQwJUJBJUQwJUIwJUQwJUJCfGVufDB8fDB8fHww",
     }
 ];
+
+
+
+
