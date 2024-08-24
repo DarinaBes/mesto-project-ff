@@ -37,10 +37,6 @@ const jobInput = formEditprofile.elements.description;
 // Находим поля формы в DOM
 const nameCardNew = formNewCard.elements["place-name"];
 const imgCardNew = formNewCard.elements.link;
-const newCardUser = {
-    name: "",
-    link: "",
-};
 
 imgPopupCloseButton.addEventListener("click", () => {
     closeModal(imgPopup);
@@ -87,6 +83,10 @@ newCardPopupCloseButton.addEventListener("click", () => {
 // Обработчик «отправки» формы
 function handleImgForm(evt) {
     evt.preventDefault();
+    const newCardUser = {
+        name: "",
+        link: "",
+    };
     newCardUser.name = nameCardNew.value;
     newCardUser.link = imgCardNew.value;
     placesList.prepend(
@@ -107,7 +107,7 @@ function openImgPopup(evt) {
     const cardImage = evt.target
     imageContainer.src = cardImage.src
     imageContainer.alt = cardImage.alt
-    imageCaption.textContent = cardImage.name
+    imageCaption.textContent = cardImage.alt
     openModal(imgPopup);
 }
 

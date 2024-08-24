@@ -12,18 +12,15 @@ export function closeModal(popupElement) {
 
 // Функция закрывающая попапы при нажатии клавиши esc
 function closeByEsc(evt) {
+    const openedPopup = document.querySelector('.popup_is-opened');
     if (evt.key === 'Escape') {
-        closePopup()
+        closeModal(openedPopup)
     }
 } 
 // Функция закрывающая попапы при нажатии на оверлей
 function closeByOverlayClick(evt) {
     if (evt.currentTarget === evt.target) {
-        closePopup()
+        closeModal(evt.currentTarget)
     }
-}
-
-function closePopup() {
-    const openedPopup = document.querySelector('.popup_is-opened');
-    closeModal(openedPopup); 
+    
 }
