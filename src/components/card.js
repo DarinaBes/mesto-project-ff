@@ -1,33 +1,29 @@
-import { openModal, closeModal } from './modal.js';
 // Функция создания карточки
-
-export function createCard(cardItem, deleteCard, cardTemplate, imgPopup, likeHandleFunction) {
+export function createCard(cardItem, deleteCard, cardTemplate, openImgPopup) {
     const cardNew = cardTemplate.querySelector('.card').cloneNode(true);
+    const cardImage = cardNew.querySelector('.card__image')
 
-    cardNew.querySelector('.card__image').src = cardItem.link;
-    cardNew.querySelector('.card__image').alt = cardItem.name;
+    cardImage.src = cardItem.link;
+    cardImage.alt = cardItem.name;
     cardNew.querySelector('.card__title').textContent = cardItem.name;
     cardNew.querySelector('.card__delete-button').addEventListener('click', () => {
         deleteCard(cardNew);
     });
 
-    cardNew.querySelector('.card__image').addEventListener('click', () => {
-        const imageContainer = imgPopup.querySelector('.popup__image')
-        imageContainer.src = cardItem.link
-        imageContainer.alt = cardItem.name
-        const imageCaption = imgPopup.querySelector('.popup__caption')
-        imageCaption.textContent = cardItem.name
-        openModal(imgPopup);
-    });
+    cardNew.querySelector('.card__image').addEventListener('click', openImgPopup);
     // Лайки на карточках
     const buttonLike = cardNew.querySelector('.card__like-button')
-    buttonLike.addEventListener('click', likeHandleFunction)
-
+    buttonLike.addEventListener('click', handleLike)
     return cardNew;
 }
 
 // Функция удаления карточки
-
 export function deleteCard(cardNew) {
     cardNew.remove();
 }
+
+function handleLike(evt) {
+    if (evt.target.classList.contains("card__like-button")) {
+        evt.target.classList.toggle("card__like-button_is-active");
+    }
+};
