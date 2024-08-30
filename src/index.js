@@ -4,6 +4,7 @@ import "./pages/index.css";
 import { initialCards } from "./components/cards.js";
 import { createCard, deleteCard } from "./components/card.js";
 import { openModal, closeModal } from "./components/modal.js";
+import { enableValidation, clearValidation } from "./components/validation.js";
 
 // Темплейт карточки
 const cardTemplate = document.querySelector("#card-template").content;
@@ -52,7 +53,9 @@ initialCards.forEach((cardItem) => {
 profileEditButton.addEventListener("click", () => {
     nameInput.value = profileName.textContent;
     jobInput.value = profileJob.textContent;
-    openModal(profilePopup);
+    // Очистка ошибок валидации при открытии формы профиля
+    clearValidation(profilePopup);
+    openModal(profilePopup);    
 });
 profilePopupCloseButton.addEventListener("click", () => {
     formEditprofile.reset();
@@ -73,6 +76,8 @@ function handleFormEdit(evt) {
 formEditprofile.addEventListener("submit", handleFormEdit);
 
 newCardAddButton.addEventListener("click", () => {
+     // Очистка ошибок валидации при очистке формы добавления карточки
+    clearValidation(newCardPopup);
     openModal(newCardPopup);
 });
 newCardPopupCloseButton.addEventListener("click", () => {
@@ -110,4 +115,6 @@ function openImgPopup(evt) {
     imageCaption.textContent = cardImage.alt
     openModal(imgPopup);
 }
+
+enableValidation()
 

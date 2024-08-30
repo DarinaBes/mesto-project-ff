@@ -1,3 +1,5 @@
+// функция создания карточки принимает в качестве параметров данные карточки, функции обработки её событий и id текущего пользователя;
+
 // Функция создания карточки
 export function createCard(cardItem, deleteCard, cardTemplate, openImgPopup) {
     const cardNew = cardTemplate.querySelector('.card').cloneNode(true);
