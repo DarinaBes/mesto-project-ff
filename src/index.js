@@ -5,6 +5,22 @@ import { initialCards } from "./components/cards.js";
 import { createCard, deleteCard } from "./components/card.js";
 import { openModal, closeModal } from "./components/modal.js";
 import { enableValidation, clearValidation } from "./components/validation.js";
+import { getInitialCards, getUserInfo } from './components/api.js'
+
+getInitialCards()
+getUserInfo()
+
+
+
+
+const configValidation = {
+    formList: '.popup__form',
+    inputList: '.popup__input',
+    buttonElement: '.popup__button',
+    buttonElementDisabled: 'popup__button_disabled',
+    inputErrorClass: 'popup__input_type_error',
+    errorClass: 'popup__input-error_active'
+};
 
 // Темплейт карточки
 const cardTemplate = document.querySelector("#card-template").content;
@@ -24,12 +40,18 @@ const newCardPopup = document.querySelector(".popup_type_new-card");
 const newCardPopupCloseButton = newCardPopup.querySelector(".popup__close");
 const newCardAddButton = document.querySelector(".profile__add-button");
 
+//Профиль пользователя
+const profilePopupAvatar = document.querySelector(".popup_type_new-avatar");
+const profileImage = document.querySelector(".profile__image");
+const avatarPopupCloseButton = profilePopupAvatar.querySelector(".popup__close");
 const profileName = document.querySelector(".profile__title");
 const profileJob = document.querySelector(".profile__description");
+
 
 // Формы
 const formEditprofile = document.forms["edit-profile"];
 const formNewCard = document.forms["new-place"];
+const formNewAvatar = document.forms["avatar"];
 
 // Выбираем элементы, куда должны быть вставлены значения полей
 const nameInput = formEditprofile.elements.name; 
@@ -38,6 +60,7 @@ const jobInput = formEditprofile.elements.description;
 // Находим поля формы в DOM
 const nameCardNew = formNewCard.elements["place-name"];
 const imgCardNew = formNewCard.elements.link;
+const imgAvatarNew = formNewAvatar.elements.link;
 
 imgPopupCloseButton.addEventListener("click", () => {
     closeModal(imgPopup);
@@ -54,7 +77,7 @@ profileEditButton.addEventListener("click", () => {
     nameInput.value = profileName.textContent;
     jobInput.value = profileJob.textContent;
     // Очистка ошибок валидации при открытии формы профиля
-    clearValidation(profilePopup);
+    clearValidation(profilePopup, configValidation);
     openModal(profilePopup);    
 });
 profilePopupCloseButton.addEventListener("click", () => {
@@ -76,13 +99,14 @@ function handleFormEdit(evt) {
 formEditprofile.addEventListener("submit", handleFormEdit);
 
 newCardAddButton.addEventListener("click", () => {
-     // Очистка ошибок валидации при очистке формы добавления карточки
-    clearValidation(newCardPopup);
+    
     openModal(newCardPopup);
 });
 newCardPopupCloseButton.addEventListener("click", () => {
     closeModal(newCardPopup);
     formNewCard.reset();
+    // Очистка ошибок валидации при очистке формы добавления карточки
+    clearValidation(newCardPopup, configValidation);
 });
 
 // Обработчик «отправки» формы
@@ -116,5 +140,27 @@ function openImgPopup(evt) {
     openModal(imgPopup);
 }
 
-enableValidation()
+// Обновить аватар
+profileImage.addEventListener("click", () => {
+    openModal(profilePopupAvatar);
+});
+function handleImgAvatar(evt) {
+    evt.preventDefault();
+    const newAvatar = {link: imgAvatarNew.value};
+    profileImage.style.backgroundImage = `url(${newAvatar.link})`;
+    localStorage.setItem('userAvatar', newAvatar.link); 
+    closeModal(profilePopupAvatar);
+    formNewAvatar.reset();
+    clearValidation(formNewAvatar, configValidation);
+}
+// Прикрепляем обработчик к форме:
+formNewAvatar.addEventListener("submit", handleImgAvatar);
+
+avatarPopupCloseButton.addEventListener("click", () => {
+    closeModal(profilePopupAvatar);
+    formNewAvatar.reset();
+});
+
+
+enableValidation(configValidation);
 
