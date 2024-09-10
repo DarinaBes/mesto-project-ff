@@ -17,3 +17,14 @@
     padding: 30px 20px;
   }
 }
+
+.popup__question {
+  width: 100%;
+  background-color: #fff;
+  border-radius: 10px;
+  position: relative;
+  box-sizing: border-box;
+  padding: 34px 36px;
+  min-height: 181px;
+  max-width: 430px;
+}

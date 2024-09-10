@@ -1,14 +1,15 @@
 import "./vendor/fonts.css";
 import "./vendor/normalize.css";
 import "./pages/index.css";
-import { createCard, deleteCard } from "./components/card.js";
+import { createCard } from "./components/card.js";
 import { openModal, closeModal } from "./components/modal.js";
 import { enableValidation, clearValidation } from "./components/validation.js";
 import { getInitialCards, getUserInfo, editProfile, editAvatar, displayCard } from './components/api.js'
 
 let userId;
 
-Promise.all([getUserInfo(), getInitialCards()])
+function getData() {
+    Promise.all([getUserInfo(), getInitialCards()])
     .then(([profileUser, initialCards]) => {
         userId = profileUser._id;
 
@@ -19,11 +20,14 @@ Promise.all([getUserInfo(), getInitialCards()])
         // Вывести карточки на страницу
         initialCards.forEach((cardItem) => {
             placesList.appendChild(
-                createCard(cardItem, deleteCard, cardTemplate, openImgPopup, userId)
+                createCard(cardItem, cardTemplate, openImgPopup, userId, openSubmitDeletePopup)
             );
         });
     })
     .catch(error => console.error("Ошибка", error));
+}
+
+getData()
 
 const configValidation = {
     formList: '.popup__form',
@@ -133,10 +137,10 @@ function handleImgForm(evt) {
             placesList.prepend(
                 createCard(
                     card,
-                    deleteCard,
                     cardTemplate,
                     openImgPopup,
-                    userId
+                    userId,
+                    openSubmitDeletePopup
                 )
             );
             closeModal(newCardPopup);
@@ -150,7 +154,6 @@ function handleImgForm(evt) {
         });
 }
 formNewCard.addEventListener("submit", handleImgForm);
-
 
 //Открыть карточку на весь экран
 function openImgPopup(evt) {
@@ -199,6 +202,27 @@ function NewButtonText(yesLoading, button) {
     else {
     button.textContent = "Сохранить";
     }
+}
+
+//Popup удаления карточки
+const popupDeleteQuestion = document.querySelector(".popup_type_question");
+const submitDeleteButton = document.querySelector('form[name="card-delete"');
+const closeButtonQuestion = popupDeleteQuestion.querySelector(".popup__close");
+closeButtonQuestion.addEventListener("click", () => {
+    closeModal(popupDeleteQuestion);
+});
+
+function openSubmitDeletePopup(cardId, deleteCard) {
+    openModal(popupDeleteQuestion);
+    submitDeleteButton.addEventListener('click', ()=> deleteCard(cardId).then(()=> {
+        closeSubmitDeletePopup()
+        placesList.replaceChildren();
+        getData()
+    }), { once: true })
+}
+
+function closeSubmitDeletePopup() {
+    closeModal(popupDeleteQuestion);
 }
 
 //Валидация
