@@ -68,12 +68,12 @@ export function removeMyCard(cardId) {
   }).then((res) => resCheck(res));
 }
 //Обновить аватарку
-export function editAvatar(avatar) {
+export function editAvatar(avatarLink) {
   return fetch(`${config.baseUrl}/users/me/avatar`, {
     method: "PATCH",
     headers: config.headers,
     body: JSON.stringify({
-      avatar: avatar.link,
+      avatar: avatarLink,
     }),
   }).then((res) => resCheck(res));
 }
